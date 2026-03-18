@@ -1,6 +1,30 @@
 import { prisma } from '@/lib/db';
 
 export async function POST() {
+  // Seed cargos if empty
+  const cargoCount = await prisma.cargo.count();
+  if (cargoCount === 0) {
+    const defaultCargos = [
+      'Diretor(a) de Engenharia',
+      'Diretor(a) de Gerenciamento',
+      'Diretor(a) Comercial',
+      'Gerente de Projetos',
+      'Gerente de Contratos',
+      'Coordenador(a) de Projetos',
+      'Coordenador(a) de Obras',
+      'Engenheiro(a) Sênior',
+      'Engenheiro(a) de Campo',
+      'Fiscal de Obras',
+      'Superintendente',
+      'Analista de ESG',
+      'Consultor(a) Técnico(a)',
+      'Especialista Técnico(a)',
+    ];
+    await prisma.cargo.createMany({
+      data: defaultCargos.map((label, i) => ({ label, order: i + 1 })),
+    });
+  }
+
   const count = await prisma.question.count();
   if (count > 0) {
     return Response.json({ skipped: true, message: 'Banco de perguntas já populado.' });

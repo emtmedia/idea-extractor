@@ -72,6 +72,82 @@ export default function GuiaPage() {
           </div>
         </div>
 
+        {/* Cronograma Sugerido */}
+        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-6">
+          <h3 className="font-bold text-[#14344A] text-lg mb-4">📅 Cronograma Sugerido</h3>
+          <div className="space-y-4">
+            {[
+              {
+                days: 'Dia 1–2',
+                title: 'Preparação e agendamento',
+                color: '#1ABC9C',
+                desc: 'Envie e-mail preparatório a cada diretor/comitê. Agende 45 min com cada. Prepare materiais de apoio.',
+              },
+              {
+                days: 'Dia 3–5',
+                title: 'Entrevistas (1 por dia)',
+                color: '#E67E22',
+                desc: 'Realize as 3 entrevistas. Grave (com permissão) ou tenha um segundo anotador. Não ultrapasse 45 min.',
+              },
+              {
+                days: 'Dia 6–7',
+                title: 'Síntese nos Challenge Canvas',
+                color: '#E74C3C',
+                desc: 'Preencha 1 canvas por diretoria. Redija as declarações "How Might We". Revise a consistência entre os 3.',
+              },
+              {
+                days: 'Dia 8',
+                title: 'Validação com diretores',
+                color: '#8E44AD',
+                desc: 'Envie o canvas preenchido para cada diretor. Reunião rápida (15–20 min) para ajustes. Obtenha o "de acordo".',
+              },
+              {
+                days: 'Dia 9–10',
+                title: 'Preparação do briefing para os grupos',
+                color: '#2980B9',
+                desc: 'Formate os 3 desafios em documento padronizado. Inclua contexto, restrições e critérios de avaliação.',
+              },
+            ].map((step, i) => (
+              <div key={i} className="flex gap-4">
+                <div className="flex-shrink-0 w-20 pt-0.5">
+                  <span className="inline-block text-xs font-bold px-2 py-1 rounded-full text-white" style={{ background: step.color }}>{step.days}</span>
+                </div>
+                <div>
+                  <div className="font-semibold text-sm text-[#14344A]">{step.title}</div>
+                  <div className="text-sm text-gray-500 mt-0.5">{step.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Checklist de Qualidade */}
+        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-6">
+          <h3 className="font-bold text-[#14344A] text-lg mb-1">✅ Checklist de Qualidade do Desafio</h3>
+          <p className="text-sm text-gray-500 mb-4">Antes de entregar o desafio aos grupos de ideação, verifique:</p>
+          <ul className="space-y-2">
+            {[
+              'O desafio descreve um problema, não uma solução?',
+              'É específico o suficiente para direcionar a ideação, mas aberto o suficiente para permitir múltiplas abordagens?',
+              'Contém dados quantitativos de impacto (horas, custo, frequência)?',
+              'A causa-raiz está identificada (não apenas o sintoma)?',
+              'Os stakeholders afetados estão mapeados?',
+              'As tentativas anteriores e restrições estão documentadas?',
+              'O diretor/comitê patrocinador validou e aprovou a redação final?',
+              'A declaração "How Might We" é inspiradora e compreensível para não-especialistas da área?',
+              'Os 3 desafios estão equilibrados em escopo e complexidade?',
+            ].map((item, i) => (
+              <li key={i} className="flex items-start gap-2.5 text-sm text-gray-700">
+                <span className="flex-shrink-0 w-5 h-5 rounded border-2 border-green-400 bg-green-50 flex items-center justify-center text-green-600 text-xs font-bold mt-0.5">✓</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+          <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-700">
+            <strong>Atenção:</strong> Se os desafios forem muito desiguais em complexidade, os grupos tenderão a investir energia desproporcional em um e superficializar os outros. Busque equilibrar o &quot;tamanho&quot; de cada desafio.
+          </div>
+        </div>
+
         <div className="text-center">
           <Link href="/nova" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white text-sm" style={{ background: 'var(--c-primary)' }}>
             🎙️ Iniciar Nova Entrevista

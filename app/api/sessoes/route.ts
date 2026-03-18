@@ -11,7 +11,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { area, interviewee, interviewDate } = body;
+  const { area, interviewee, cargo, interviewDate, nota } = body;
 
   if (!area) {
     return Response.json({ error: 'Area is required' }, { status: 400 });
@@ -21,7 +21,9 @@ export async function POST(req: NextRequest) {
     data: {
       area,
       interviewee: interviewee || null,
+      cargo: cargo || null,
       interviewDate: interviewDate || null,
+      nota: nota || null,
       answers: {},
       canvas: {},
     },

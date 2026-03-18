@@ -9,6 +9,7 @@ const navItems = [
   { href: '/nova', icon: '➕', label: 'Nova Entrevista' },
   { href: '/guia', icon: '📘', label: 'Material Instrutivo' },
   { href: '/admin/perguntas', icon: '⚙️', label: 'Perguntas' },
+  { href: '/admin/cargos', icon: '🏢', label: 'Cargos' },
   { href: '/lixeira', icon: '🗑️', label: 'Lixeira' },
 ];
 
