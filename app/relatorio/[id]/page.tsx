@@ -1,4 +1,5 @@
 import AppShell from '@/components/AppShell';
+import ReportPageClient from '@/components/ReportPageClient';
 import { prisma } from '@/lib/db';
 import { AREA_MAP } from '@/lib/areas';
 import { notFound } from 'next/navigation';
@@ -61,91 +62,93 @@ export default async function RelatorioPage({ params }: { params: Promise<{ id: 
         </div>
       </div>
 
-      <div className="px-8 py-8 max-w-4xl" id="report-content">
-        {/* Meta */}
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-6">
-          <h3 className="font-bold text-[#14344A] mb-4 text-lg">Identificação da Sessão</h3>
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            {[
-              ['Área / Diretoria', area?.label || session.area],
-              ['Entrevistado(a)', session.interviewee || '—'],
-              ['Data', session.interviewDate || '—'],
-              ['Status', session.status === 'completed' ? 'Concluída' : 'Rascunho'],
-              ['Criado em', new Date(session.createdAt).toLocaleDateString('pt-BR')],
-            ].map(([k, v]) => (
-              <div key={k}>
-                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">{k}</span>
-                <p className="font-medium text-gray-800 mt-0.5">{v}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Interview answers */}
-        <h3 className="font-bold text-[#14344A] text-lg mb-4">Respostas da Entrevista</h3>
-        {standardQKeys.filter((k) => answers[k]).map((key) => {
-          const meta = Q_LABELS[key];
-          if (!meta) return null;
-          return (
-            <div key={key} className="bg-white rounded-xl border border-gray-100 shadow-sm mb-4 overflow-hidden">
-              <div className="px-5 py-1.5 text-[11px] font-bold uppercase tracking-widest text-white" style={{ background: meta.color }}>
-                {meta.phase}
-              </div>
-              <div className="p-5">
-                <div className="text-sm font-semibold text-gray-700 mb-2">{meta.label}</div>
-                <div className="text-sm text-gray-800 whitespace-pre-wrap bg-gray-50 rounded-lg p-3 leading-relaxed border-l-4" style={{ borderLeftColor: meta.color }}>
-                  {answers[key]}
+      <ReportPageClient>
+        <div className="px-8 py-8 max-w-4xl" id="report-content">
+          {/* Meta */}
+          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-6">
+            <h3 className="font-bold text-[#14344A] mb-4 text-lg">Identificação da Sessão</h3>
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              {[
+                ['Área / Diretoria', area?.label || session.area],
+                ['Entrevistado(a)', session.interviewee || '—'],
+                ['Data', session.interviewDate || '—'],
+                ['Status', session.status === 'completed' ? 'Concluída' : 'Rascunho'],
+                ['Criado em', new Date(session.createdAt).toLocaleDateString('pt-BR')],
+              ].map(([k, v]) => (
+                <div key={k}>
+                  <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">{k}</span>
+                  <p className="font-medium text-gray-800 mt-0.5">{v}</p>
                 </div>
-              </div>
+              ))}
             </div>
-          );
-        })}
+          </div>
 
-        {/* Area probes */}
-        {probeKeys.some((k) => answers[k]) && (
-          <>
-            <h3 className="font-bold text-[#14344A] text-lg mb-4 mt-8">
-              {area?.icon} Sondas Específicas — {area?.label}
-            </h3>
-            {probeKeys.filter((k) => answers[k]).map((key, i) => (
+          {/* Interview answers */}
+          <h3 className="font-bold text-[#14344A] text-lg mb-4">Respostas da Entrevista</h3>
+          {standardQKeys.filter((k) => answers[k]).map((key) => {
+            const meta = Q_LABELS[key];
+            if (!meta) return null;
+            return (
               <div key={key} className="bg-white rounded-xl border border-gray-100 shadow-sm mb-4 overflow-hidden">
-                <div className="px-5 py-1.5 text-[11px] font-bold uppercase tracking-widest text-white" style={{ background: area?.color || '#2980B9' }}>
-                  Sonda {i + 1}
+                <div className="px-5 py-1.5 text-[11px] font-bold uppercase tracking-widest text-white" style={{ background: meta.color }}>
+                  {meta.phase}
                 </div>
                 <div className="p-5">
-                  <div className="text-sm font-semibold text-gray-700 mb-2">▸ {area?.probes[i]}</div>
-                  <div className="text-sm text-gray-800 whitespace-pre-wrap bg-gray-50 rounded-lg p-3 leading-relaxed border-l-4" style={{ borderLeftColor: area?.color || '#2980B9' }}>
+                  <div className="text-sm font-semibold text-gray-700 mb-2">{meta.label}</div>
+                  <div className="text-sm text-gray-800 whitespace-pre-wrap bg-gray-50 rounded-lg p-3 leading-relaxed border-l-4" style={{ borderLeftColor: meta.color }}>
                     {answers[key]}
                   </div>
                 </div>
               </div>
-            ))}
-          </>
-        )}
+            );
+          })}
 
-        {/* Canvas */}
-        {Object.keys(canvas).some((k) => canvas[k]) && (
-          <>
-            <h3 className="font-bold text-[#14344A] text-lg mb-4 mt-8">📋 Challenge Canvas</h3>
-            {canvas['hmw'] && (
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-5 mb-4">
-                <div className="text-xs font-bold uppercase tracking-wide text-[#1A5276] mb-2">🎯 Declaração do Desafio (How Might We...)</div>
-                <div className="text-base font-medium text-[#14344A] whitespace-pre-wrap">{canvas['hmw']}</div>
-              </div>
-            )}
-            <div className="grid grid-cols-2 gap-4">
-              {Object.entries(CANVAS_LABELS)
-                .filter(([k]) => k !== 'hmw' && canvas[k])
-                .map(([k, meta]) => (
-                  <div key={k} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-                    <div className="text-xs font-bold uppercase tracking-wide text-[#1A5276] mb-2">{meta.icon} {meta.title}</div>
-                    <div className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{canvas[k]}</div>
+          {/* Area probes */}
+          {probeKeys.some((k) => answers[k]) && (
+            <>
+              <h3 className="font-bold text-[#14344A] text-lg mb-4 mt-8">
+                {area?.icon} Sondas Específicas — {area?.label}
+              </h3>
+              {probeKeys.filter((k) => answers[k]).map((key, i) => (
+                <div key={key} className="bg-white rounded-xl border border-gray-100 shadow-sm mb-4 overflow-hidden">
+                  <div className="px-5 py-1.5 text-[11px] font-bold uppercase tracking-widest text-white" style={{ background: area?.color || '#2980B9' }}>
+                    Sonda {i + 1}
                   </div>
-                ))}
-            </div>
-          </>
-        )}
-      </div>
+                  <div className="p-5">
+                    <div className="text-sm font-semibold text-gray-700 mb-2">▸ {area?.probes[i]}</div>
+                    <div className="text-sm text-gray-800 whitespace-pre-wrap bg-gray-50 rounded-lg p-3 leading-relaxed border-l-4" style={{ borderLeftColor: area?.color || '#2980B9' }}>
+                      {answers[key]}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+
+          {/* Canvas */}
+          {Object.keys(canvas).some((k) => canvas[k]) && (
+            <>
+              <h3 className="font-bold text-[#14344A] text-lg mb-4 mt-8">📋 Challenge Canvas</h3>
+              {canvas['hmw'] && (
+                <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-5 mb-4">
+                  <div className="text-xs font-bold uppercase tracking-wide text-[#1A5276] mb-2">🎯 Declaração do Desafio (How Might We...)</div>
+                  <div className="text-base font-medium text-[#14344A] whitespace-pre-wrap">{canvas['hmw']}</div>
+                </div>
+              )}
+              <div className="grid grid-cols-2 gap-4">
+                {Object.entries(CANVAS_LABELS)
+                  .filter(([k]) => k !== 'hmw' && canvas[k])
+                  .map(([k, meta]) => (
+                    <div key={k} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+                      <div className="text-xs font-bold uppercase tracking-wide text-[#1A5276] mb-2">{meta.icon} {meta.title}</div>
+                      <div className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{canvas[k]}</div>
+                    </div>
+                  ))}
+              </div>
+            </>
+          )}
+        </div>
+      </ReportPageClient>
 
       <style>{`
         @media print {

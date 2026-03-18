@@ -1,5 +1,5 @@
 import AppShell from '@/components/AppShell';
-import CanvasForm from '@/components/CanvasForm';
+import CanvasPageClient from '@/components/CanvasPageClient';
 import { prisma } from '@/lib/db';
 import { AREA_MAP } from '@/lib/areas';
 import { notFound } from 'next/navigation';
@@ -27,7 +27,7 @@ export default async function CanvasPage({ params }: { params: Promise<{ id: str
           {area?.label} · {session.interviewee || 'Entrevistado não informado'}
         </p>
       </div>
-      <CanvasForm session={JSON.parse(JSON.stringify(session))} area={area} />
+      <CanvasPageClient session={JSON.parse(JSON.stringify(session))} area={area} />
     </AppShell>
   );
 }

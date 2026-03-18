@@ -1,5 +1,6 @@
 import AppShell from '@/components/AppShell';
 import InterviewForm from '@/components/InterviewForm';
+import CopyLinkButton from '@/components/CopyLinkButton';
 import { prisma } from '@/lib/db';
 import { AREA_MAP } from '@/lib/areas';
 import { notFound } from 'next/navigation';
@@ -27,9 +28,12 @@ export default async function SessaoPage({ params }: { params: Promise<{ id: str
         <p className="text-white/75 text-sm relative">
           {area?.label} · {session.interviewee || 'Entrevistado não informado'} · {session.interviewDate || '—'}
         </p>
-        <span className="inline-block mt-3 bg-white/15 border border-white/20 text-xs font-medium px-4 py-1 rounded-full">
-          Entrevista estruturada de 45 minutos
-        </span>
+        <div className="flex items-center gap-3 flex-wrap mt-2">
+          <span className="inline-block bg-white/15 border border-white/20 text-xs font-medium px-4 py-1 rounded-full">
+            Entrevista estruturada de 45 minutos
+          </span>
+          <CopyLinkButton sessionId={id} />
+        </div>
       </div>
       <InterviewForm session={JSON.parse(JSON.stringify(session))} area={area} />
     </AppShell>

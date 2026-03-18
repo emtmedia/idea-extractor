@@ -8,15 +8,35 @@ datasource db {
 }
 
 model Session {
-  id            String   @id @default(cuid())
-  area          String
-  interviewee   String?
-  interviewDate String?
-  answers       Json     @default("{}")
-  canvas        Json     @default("{}")
-  status        String   @default("draft")
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id               String   @id @default(cuid())
+  area             String
+  interviewee      String?
+  interviewDate    String?
+  answers          Json     @default("{}")
+  canvas           Json     @default("{}")
+  status           String   @default("draft")
+  customQuestions  Json     @default("[]")
+  questionSnapshot Json     @default("[]")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   @@map("sessions")
+}
+
+model Question {
+  id         String   @id @default(cuid())
+  area       String   // 'all' = standard P1-P8, or 'eng'|'ger'|'esg'|'oeg'|'com'
+  type       String   // 'standard' | 'probe'
+  phase      String   // 'warmup' | 'deep' | 'impact' | 'frame' | 'probe'
+  phaseLabel String?
+  phaseColor String?
+  order      Int      @default(0)
+  text       String
+  note       String?
+  tip        String?
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("questions")
 }

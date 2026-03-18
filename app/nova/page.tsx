@@ -25,6 +25,8 @@ export default function NovaEntrevistaPage() {
     });
     if (res.ok) {
       const data = await res.json();
+      // Ensure question bank is seeded
+      fetch('/api/seed', { method: 'POST' }).catch(() => {});
       router.push(`/sessao/${data.id}`);
     } else {
       alert('Erro ao criar sessão. Tente novamente.');
