@@ -5,7 +5,7 @@ export default function GuiaPage() {
   return (
     <AppShell>
       <div style={{ background: 'linear-gradient(135deg, #14344A 0%, #2980B9 100%)' }} className="text-white px-8 py-10">
-        <h2 className="text-3xl font-bold tracking-tight">📘 Material Instrutivo</h2>
+        <h2 className="text-3xl font-bold tracking-tight">📘 Dicas para Entrevista</h2>
         <p className="text-white/75 mt-2 text-sm max-w-lg">Guia completo de extração de desafios de produtividade para a Campanha de Inovação IDG</p>
         <span className="inline-block mt-4 bg-white/15 border border-white/20 text-xs font-medium px-4 py-1 rounded-full">Challenge Canvas + Entrevista Estruturada</span>
       </div>

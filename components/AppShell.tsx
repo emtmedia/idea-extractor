@@ -7,7 +7,8 @@ import { useState } from 'react';
 const navItems = [
   { href: '/', icon: '🏠', label: 'Dashboard' },
   { href: '/nova', icon: '➕', label: 'Nova Entrevista' },
-  { href: '/guia', icon: '📘', label: 'Material Instrutivo' },
+  { href: '/guia', icon: '📘', label: 'Dicas para Entrevista' },
+  { href: '/manual', icon: '📖', label: 'Manual de Uso do App' },
   { href: '/admin/perguntas', icon: '⚙️', label: 'Perguntas' },
   { href: '/admin/cargos', icon: '🏢', label: 'Cargos' },
   { href: '/lixeira', icon: '🗑️', label: 'Lixeira' },
