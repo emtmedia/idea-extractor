@@ -3,6 +3,7 @@ import { NextRequest } from 'next/server';
 
 export async function GET() {
   const sessions = await prisma.session.findMany({
+    where: { deletedAt: null },
     orderBy: { createdAt: 'desc' },
   });
   return Response.json(sessions);

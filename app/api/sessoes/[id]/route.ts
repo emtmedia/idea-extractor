@@ -42,6 +42,10 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  await prisma.session.delete({ where: { id } });
+  // Soft delete — move to recycle bin
+  await prisma.session.update({
+    where: { id },
+    data: { deletedAt: new Date() },
+  });
   return Response.json({ success: true });
 }

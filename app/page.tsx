@@ -2,11 +2,23 @@ import AppShell from '@/components/AppShell';
 import { prisma } from '@/lib/db';
 import Link from 'next/link';
 import { AREA_MAP } from '@/lib/areas';
+import DeleteButton from '@/components/DeleteButton';
 
 export const dynamic = 'force-dynamic';
 
+function formatDateTime(date: Date): string {
+  const d = new Date(date);
+  const dd = String(d.getDate()).padStart(2, '0');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const yyyy = d.getFullYear();
+  const hh = String(d.getHours()).padStart(2, '0');
+  const min = String(d.getMinutes()).padStart(2, '0');
+  return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+}
+
 export default async function DashboardPage() {
   const sessions = await prisma.session.findMany({
+    where: { deletedAt: null },
     orderBy: { createdAt: 'desc' },
   });
 
@@ -82,6 +94,9 @@ export default async function DashboardPage() {
                         <div className="text-sm text-gray-500 mt-0.5">
                           {area?.label || s.area} · {s.interviewDate || 'Data não informada'}
                         </div>
+                        <div className="text-xs text-gray-400 mt-0.5">
+                          Criado em {formatDateTime(s.createdAt)}
+                        </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -103,6 +118,7 @@ export default async function DashboardPage() {
                       <Link href={`/relatorio/${s.id}`} className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-gray-700">
                         Relatório →
                       </Link>
+                      <DeleteButton sessionId={s.id} />
                     </div>
                   </div>
                 </div>

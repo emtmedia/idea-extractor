@@ -9,6 +9,7 @@ const navItems = [
   { href: '/nova', icon: '➕', label: 'Nova Entrevista' },
   { href: '/guia', icon: '📘', label: 'Material Instrutivo' },
   { href: '/admin/perguntas', icon: '⚙️', label: 'Perguntas' },
+  { href: '/lixeira', icon: '🗑️', label: 'Lixeira' },
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
