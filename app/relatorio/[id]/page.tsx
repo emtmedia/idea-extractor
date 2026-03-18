@@ -50,7 +50,7 @@ export default async function RelatorioPage({ params }: { params: Promise<{ id: 
         style={{ background: 'linear-gradient(135deg, #1A2A3A 0%, #2C3E50 100%)' }}
       >
         <h2 className="text-3xl font-bold tracking-tight">📄 Relatório da Entrevista</h2>
-        <p className="text-white/75 mt-2 text-sm">{area?.label} · {session.interviewee || '—'} · {session.interviewDate || '—'}</p>
+        <p className="text-white/75 mt-2 text-sm">{area?.label} · {session.interviewee || '—'}{session.cargo ? ` (${session.cargo})` : ''} · {session.interviewDate || '—'}</p>
         <div className="flex gap-3 mt-4 no-print">
           <Link href={`/sessao/${session.id}`} className="px-4 py-2 rounded-lg text-sm font-semibold bg-white/15 text-white hover:bg-white/25">
             ← Entrevista
@@ -71,6 +71,7 @@ export default async function RelatorioPage({ params }: { params: Promise<{ id: 
               {[
                 ['Área / Diretoria', area?.label || session.area],
                 ['Entrevistado(a)', session.interviewee || '—'],
+                ['Cargo / Função', session.cargo || '—'],
                 ['Data', session.interviewDate || '—'],
                 ['Status', session.status === 'completed' ? 'Concluída' : 'Rascunho'],
                 ['Criado em', new Date(session.createdAt).toLocaleDateString('pt-BR')],

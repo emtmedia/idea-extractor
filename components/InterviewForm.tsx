@@ -3,6 +3,7 @@
 import { Area } from '@/lib/areas';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import MicButton from '@/components/MicButton';
 
 interface Session {
   id: string;
@@ -139,6 +140,11 @@ export default function InterviewForm({ session, area }: { session: Session; are
     setSaved(false);
   }
 
+  function appendTranscript(id: string, text: string) {
+    const current = answers[id] || '';
+    setAnswer(id, current ? `${current}\n${text}` : text);
+  }
+
   async function autoSave() {
     setSaving(true);
     await fetch(`/api/sessoes/${session.id}`, {
@@ -220,7 +226,10 @@ export default function InterviewForm({ session, area }: { session: Session; are
                     {q.tip}
                   </div>
                 )}
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1.5">Resposta:</p>
+                <div className="flex items-center justify-between mb-1.5">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Resposta:</p>
+                  <MicButton onTranscript={(text) => appendTranscript(q.id, text)} />
+                </div>
                 <textarea
                   value={answers[q.id] || ''}
                   onChange={(e) => setAnswer(q.id, e.target.value)}
@@ -256,7 +265,10 @@ export default function InterviewForm({ session, area }: { session: Session; are
             </div>
             <div className="p-5">
               <div className="text-sm font-semibold text-gray-800 mb-3 leading-relaxed">▸ {probe}</div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1.5">Resposta:</p>
+              <div className="flex items-center justify-between mb-1.5">
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Resposta:</p>
+                <MicButton onTranscript={(text) => appendTranscript(`probe_${i}`, text)} />
+              </div>
               <textarea
                 value={answers[`probe_${i}`] || ''}
                 onChange={(e) => setAnswer(`probe_${i}`, e.target.value)}
@@ -271,7 +283,10 @@ export default function InterviewForm({ session, area }: { session: Session; are
 
       {/* Additional comments */}
       <div className="bg-white rounded-xl border border-l-4 shadow-sm p-6 mb-8" style={{ borderLeftColor: '#E67E22' }}>
-        <h4 className="font-bold text-[#14344A] mb-2">📝 Comentários Adicionais</h4>
+        <div className="flex items-center justify-between mb-2">
+          <h4 className="font-bold text-[#14344A]">📝 Comentários Adicionais</h4>
+          <MicButton onTranscript={(text) => appendTranscript('comments', text)} />
+        </div>
         <p className="text-sm text-gray-500 mb-3">Registre observações, percepções de linguagem corporal, temas laterais mencionados, ou qualquer informação adicional.</p>
         <textarea
           value={answers['comments'] || ''}

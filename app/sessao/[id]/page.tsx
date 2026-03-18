@@ -26,7 +26,7 @@ export default async function SessaoPage({ params }: { params: Promise<{ id: str
           <h2 className="text-3xl font-bold tracking-tight relative">Roteiro de Entrevista</h2>
         </div>
         <p className="text-white/75 text-sm relative">
-          {area?.label} · {session.interviewee || 'Entrevistado não informado'} · {session.interviewDate || '—'}
+          {area?.label} · {session.interviewee || 'Entrevistado não informado'}{(session as {cargo?: string|null}).cargo ? ` · ${(session as {cargo?: string|null}).cargo}` : ''} · {session.interviewDate || '—'}
         </p>
         <div className="flex items-center gap-3 flex-wrap mt-2">
           <span className="inline-block bg-white/15 border border-white/20 text-xs font-medium px-4 py-1 rounded-full">
