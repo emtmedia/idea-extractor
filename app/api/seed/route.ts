@@ -1,5 +1,9 @@
 import { prisma } from '@/lib/db';
 
+export async function GET() {
+  return POST();
+}
+
 export async function POST() {
   // Seed cargos if empty
   const cargoCount = await prisma.cargo.count();
