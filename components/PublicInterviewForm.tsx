@@ -117,6 +117,64 @@ const PHASES = [
   },
 ];
 
+const CINCO_PORQUES: Record<string, { problema: string; passos: [string, string][] }> = {
+  eng: {
+    problema: 'As revisões de projeto geram muito retrabalho entre as disciplinas.',
+    passos: [
+      ['Por quê 1?', 'Porque mudanças em uma disciplina não são comunicadas às outras a tempo.'],
+      ['Por quê 2?', 'Porque não há rotina de compatibilização multidisciplinar durante o projeto.'],
+      ['Por quê 3?', 'Porque cada disciplina trabalha em arquivos separados, sem integração.'],
+      ['Por quê 4?', 'Porque não há ferramenta BIM ou processo formal de compatibilização adotado.'],
+      ['Por quê 5?', 'Porque nunca foi definida uma metodologia padrão de coordenação de projetos.'],
+      ['Causa-raiz', 'Ausência de metodologia e ferramenta de compatibilização multidisciplinar.'],
+    ],
+  },
+  ger: {
+    problema: 'As informações de campo chegam ao gestor com muito atraso.',
+    passos: [
+      ['Por quê 1?', 'Porque os RDOs são preenchidos em papel e digitados posteriormente no escritório.'],
+      ['Por quê 2?', 'Porque não há aplicativo de campo para registro em tempo real.'],
+      ['Por quê 3?', 'Porque a equipe de fiscalização não tem dispositivos disponíveis em campo.'],
+      ['Por quê 4?', 'Porque nunca foi previsto orçamento para mobilização de tecnologia de campo.'],
+      ['Por quê 5?', 'Porque a digitalização de campo não foi incluída no planejamento do contrato.'],
+      ['Causa-raiz', 'Ausência de previsão orçamentária e de processo para digitalização da fiscalização em campo.'],
+    ],
+  },
+  esg: {
+    problema: 'Os relatórios de ESG atrasam toda vez.',
+    passos: [
+      ['Por quê 1?', 'Porque a coleta de dados é feita manualmente pelas áreas.'],
+      ['Por quê 2?', 'Porque não há um sistema integrado entre as diretorias.'],
+      ['Por quê 3?', 'Porque cada área usa planilhas com formatos diferentes.'],
+      ['Por quê 4?', 'Porque nunca foi definido um padrão único de reporte.'],
+      ['Por quê 5?', 'Porque não existe uma política de governança de dados.'],
+      ['Causa-raiz', 'Ausência de governança de dados e padronização de processos de reporte.'],
+    ],
+  },
+  oeg: {
+    problema: 'O planejamento de intervenções em poços (workover) frequentemente atrasa.',
+    passos: [
+      ['Por quê 1?', 'Porque a mobilização de equipes e equipamentos leva mais tempo que o previsto.'],
+      ['Por quê 2?', 'Porque o planejamento é feito com dados desatualizados do histórico dos poços.'],
+      ['Por quê 3?', 'Porque o histórico de intervenções está disperso em arquivos e sistemas diferentes.'],
+      ['Por quê 4?', 'Porque não há um repositório único de dados operacionais dos poços.'],
+      ['Por quê 5?', 'Porque nunca foi implantado um sistema de gestão de integridade de poços.'],
+      ['Causa-raiz', 'Ausência de repositório integrado de dados operacionais, gerando planejamento impreciso.'],
+    ],
+  },
+  com: {
+    problema: 'O prazo de entrega de propostas técnicas frequentemente estoura.',
+    passos: [
+      ['Por quê 1?', 'Porque o dimensionamento técnico depende de muitos especialistas simultâneos.'],
+      ['Por quê 2?', 'Porque não há uma base de dados de estimativas de projetos anteriores.'],
+      ['Por quê 3?', 'Porque cada proposta começa do zero, sem reutilização de histórico.'],
+      ['Por quê 4?', 'Porque as propostas anteriores não são indexadas de forma acessível.'],
+      ['Por quê 5?', 'Porque não existe um processo de gestão de memória técnica comercial.'],
+      ['Causa-raiz', 'Ausência de memória institucional acessível, forçando retrabalho a cada nova proposta.'],
+    ],
+  },
+};
+
 export default function PublicInterviewForm({ session, area }: { session: Session; area: Area }) {
   const [answers, setAnswers] = useState<Record<string, string>>(
     (session.answers as Record<string, string>) || {}
@@ -209,29 +267,28 @@ export default function PublicInterviewForm({ session, area }: { session: Sessio
               <div className="p-5">
                 <div className="text-sm font-semibold text-gray-800 mb-1 leading-relaxed">{q.label}</div>
                 <div className="text-xs text-gray-500 italic mb-3">{q.note}</div>
-                {q.tip === '5porques' && (
-                  <div className="rounded-lg bg-amber-50 border border-amber-200 p-4 mb-4">
-                    <p className="text-xs font-bold text-amber-800 uppercase tracking-wide mb-2">💡 Como aplicar os 5 Porquês</p>
-                    <p className="text-xs text-amber-700 mb-3">Parta do problema observado e pergunte &quot;por quê?&quot; até cinco vezes, cada resposta alimentando a próxima pergunta. O objetivo é sair do sintoma e chegar à causa-raiz real.</p>
-                    <div className="space-y-1.5 text-xs">
-                      <div className="font-semibold text-amber-800 mb-1">Exemplo:</div>
-                      {[
-                        ['Problema', 'Os relatórios de ESG atrasam toda vez.'],
-                        ['Por quê 1?', 'Porque a coleta de dados é feita manualmente pelas áreas.'],
-                        ['Por quê 2?', 'Porque não há um sistema integrado entre as diretorias.'],
-                        ['Por quê 3?', 'Porque cada área usa planilhas com formatos diferentes.'],
-                        ['Por quê 4?', 'Porque nunca foi definido um padrão único de reporte.'],
-                        ['Por quê 5?', 'Porque não existe uma política de governança de dados.'],
-                        ['Causa-raiz', 'Ausência de governança de dados e padronização de processos de reporte.'],
-                      ].map(([label, text], i) => (
-                        <div key={i} className={`flex gap-2 ${label === 'Causa-raiz' ? 'pt-2 border-t border-amber-200 font-semibold text-amber-900' : 'text-amber-700'}`}>
-                          <span className="flex-shrink-0 font-semibold w-20">{label}</span>
-                          <span>{text}</span>
+                {q.tip === '5porques' && (() => {
+                  const ex = CINCO_PORQUES[area.key];
+                  return ex ? (
+                    <div className="rounded-lg bg-amber-50 border border-amber-200 p-4 mb-4">
+                      <p className="text-xs font-bold text-amber-800 uppercase tracking-wide mb-2">💡 Como aplicar os 5 Porquês</p>
+                      <p className="text-xs text-amber-700 mb-3">Parta do problema observado e pergunte &quot;por quê?&quot; até cinco vezes, cada resposta alimentando a próxima pergunta. O objetivo é sair do sintoma e chegar à causa-raiz real.</p>
+                      <div className="space-y-1.5 text-xs">
+                        <div className="font-semibold text-amber-800 mb-1">Exemplo ({area.label}):</div>
+                        <div className="flex gap-2 text-amber-700">
+                          <span className="flex-shrink-0 font-semibold w-20">Problema</span>
+                          <span>{ex.problema}</span>
                         </div>
-                      ))}
+                        {ex.passos.map(([label, text], i) => (
+                          <div key={i} className={`flex gap-2 ${label === 'Causa-raiz' ? 'pt-2 border-t border-amber-200 font-semibold text-amber-900' : 'text-amber-700'}`}>
+                            <span className="flex-shrink-0 font-semibold w-20">{label}</span>
+                            <span>{text}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  ) : null;
+                })()}
                 <div className="flex items-center justify-between mb-1.5">
                   <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Sua resposta:</p>
                   <MicButton onTranscript={(text) => appendTranscript(q.id, text)} />
