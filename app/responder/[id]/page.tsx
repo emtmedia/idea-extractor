@@ -29,7 +29,7 @@ export default async function ResponderPage({ params }: { params: Promise<{ id: 
                 <h1 className="text-sm font-bold text-[#14344A] leading-tight">{area?.label}</h1>
                 {session.interviewee && (
                   <p className="text-xs text-gray-500">
-                    {session.interviewee}{(session as { cargo?: string | null }).cargo ? ` - ${(session as { cargo?: string | null }).cargo}` : ''}
+                    Entrevistado: {session.interviewee}{(session as { cargo?: string | null }).cargo ? ` · Cargo: ${(session as { cargo?: string | null }).cargo}` : ''}
                   </p>
                 )}
               </div>
