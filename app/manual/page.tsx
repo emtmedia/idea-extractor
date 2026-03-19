@@ -25,7 +25,8 @@ export default function ManualPage() {
               ['#canvas', '5. Challenge Canvas'],
               ['#relatorio', '6. Relatório de Sessão'],
               ['#admin', '7. Administração (Perguntas e Cargos)'],
-              ['#lixeira', '8. Lixeira'],
+              ['#pin', '8. Níveis de Acesso e PIN'],
+              ['#lixeira', '9. Lixeira'],
             ].map(([href, label]) => (
               <li key={href}>
                 <a href={href} className="text-blue-600 hover:underline">{label}</a>
@@ -126,6 +127,39 @@ export default function ManualPage() {
           </div>
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
             <p className="text-sm text-gray-600 mb-5">O formulário apresenta cada pergunta do roteiro com um campo de resposta textual e um botão de gravação de voz.</p>
+
+            {/* Link Público */}
+            <div className="rounded-lg border border-teal-200 bg-teal-50 p-4 mb-5">
+              <h4 className="font-semibold text-teal-800 text-sm mb-2">🔗 Copiar e Enviar o Link Público da Entrevista</h4>
+              <p className="text-sm text-teal-700 mb-3">
+                Após criar a sessão, o app exibe um botão <span className="inline-block bg-teal-200 rounded px-2 py-0.5 font-mono text-xs font-medium">🔗 Copiar link público</span> no cabeçalho da página de entrevista. Use-o quando o entrevistado vai responder de forma <strong>assíncrona</strong>, sem a presença do entrevistador.
+              </p>
+              <ol className="space-y-2 text-sm text-teal-700 mb-3">
+                <li><span className="font-bold">1.</span> Crie a sessão normalmente em <strong>Nova Entrevista</strong>.</li>
+                <li><span className="font-bold">2.</span> Na página da sessão, clique em <span className="inline-block bg-teal-200 rounded px-2 py-0.5 font-mono text-xs">🔗 Copiar link público</span> — o link é copiado para a área de transferência.</li>
+                <li><span className="font-bold">3.</span> Cole e envie o link para o entrevistado por e-mail, WhatsApp ou outro canal.</li>
+                <li><span className="font-bold">4.</span> O entrevistado acessa o link e responde diretamente pelo próprio dispositivo, no seu tempo.</li>
+                <li><span className="font-bold">5.</span> As respostas são salvas automaticamente e ficam disponíveis na sessão para o entrevistador revisar.</li>
+              </ol>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="p-3 bg-white/70 rounded-lg text-xs text-teal-800">
+                  <div className="font-semibold mb-1">✅ O entrevistado vê:</div>
+                  <ul className="space-y-0.5 text-teal-700">
+                    <li>• Formulário com todas as perguntas da sessão</li>
+                    <li>• Campo de texto para cada resposta</li>
+                    <li>• Botão de transcrição por voz</li>
+                  </ul>
+                </div>
+                <div className="p-3 bg-white/70 rounded-lg text-xs text-teal-800">
+                  <div className="font-semibold mb-1">🚫 O entrevistado <em>não</em> vê:</div>
+                  <ul className="space-y-0.5 text-teal-700">
+                    <li>• Challenge Canvas</li>
+                    <li>• Relatório da sessão</li>
+                    <li>• Outras sessões do sistema</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
 
             {/* Transcrição */}
             <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 mb-5">
@@ -244,10 +278,90 @@ export default function ManualPage() {
           </div>
         </section>
 
-        {/* 8. Lixeira */}
+        {/* 8. PIN */}
+        <section id="pin" className="mb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0" style={{ background: '#C0392B' }}>8</div>
+            <h3 className="font-bold text-[#14344A] text-xl">Níveis de Acesso e PIN</h3>
+          </div>
+          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
+            <p className="text-sm text-gray-600 mb-5">
+              O app possui dois perfis de usuário com diferentes níveis de acesso. O PIN é a senha numérica definida pelo gestor da Gerência de Inovação na variável <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-xs">ADMIN_PIN</span> do ambiente do Vercel.
+            </p>
+
+            {/* Tabela de perfis */}
+            <div className="overflow-x-auto mb-5">
+              <table className="w-full text-sm border-collapse rounded-lg overflow-hidden">
+                <thead>
+                  <tr style={{ background: '#14344A' }}>
+                    <th className="text-white text-left p-3 font-semibold">Perfil</th>
+                    <th className="text-white text-left p-3 font-semibold">Quem é</th>
+                    <th className="text-white text-left p-3 font-semibold">Requer PIN?</th>
+                    <th className="text-white text-left p-3 font-semibold">O que pode acessar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="bg-blue-50">
+                    <td className="p-3 font-semibold text-blue-800">👤 Entrevistado</td>
+                    <td className="p-3 text-gray-600">Diretor ou membro de comitê que recebeu o link público</td>
+                    <td className="p-3 text-green-700 font-medium">Não</td>
+                    <td className="p-3 text-gray-600">Somente o formulário público <span className="font-mono text-xs bg-gray-100 px-1 rounded">/responder/[id]</span></td>
+                  </tr>
+                  <tr className="bg-orange-50">
+                    <td className="p-3 font-semibold text-orange-800">🎙️ Entrevistador</td>
+                    <td className="p-3 text-gray-600">Membro da equipe de inovação que conduz a entrevista</td>
+                    <td className="p-3 text-green-700 font-medium">Não (navegação geral)</td>
+                    <td className="p-3 text-gray-600">Dashboard, Nova Entrevista, formulário de sessão, Dicas, Manual</td>
+                  </tr>
+                  <tr className="bg-red-50">
+                    <td className="p-3 font-semibold text-red-800">🔐 Gestor / Admin</td>
+                    <td className="p-3 text-gray-600">Gerente de Inovação ou responsável pelo sistema</td>
+                    <td className="p-3 text-red-700 font-bold">Sim — PIN obrigatório</td>
+                    <td className="p-3 text-gray-600">Canvas, Relatório, Admin Perguntas, Admin Cargos</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Quando o PIN é pedido */}
+            <div className="rounded-lg border-l-4 border-red-500 bg-red-50 p-4 mb-4">
+              <h4 className="font-semibold text-red-800 text-sm mb-3">🔒 Páginas que exigem PIN</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                {[
+                  { icon: '🧩', page: 'Challenge Canvas', path: '/canvas/[id]', desc: 'Síntese e edição do desafio' },
+                  { icon: '📊', page: 'Relatório de Sessão', path: '/relatorio/[id]', desc: 'Documento final da entrevista' },
+                  { icon: '⚙️', page: 'Admin — Perguntas', path: '/admin/perguntas', desc: 'Gerenciamento do roteiro' },
+                  { icon: '🏢', page: 'Admin — Cargos', path: '/admin/cargos', desc: 'Cadastro de cargos' },
+                ].map((item) => (
+                  <div key={item.page} className="flex items-start gap-2 bg-white/70 rounded-lg p-2.5">
+                    <span className="text-lg flex-shrink-0">{item.icon}</span>
+                    <div>
+                      <div className="font-semibold text-xs text-[#14344A]">{item.page}</div>
+                      <div className="font-mono text-[10px] text-gray-400">{item.path}</div>
+                      <div className="text-xs text-gray-500">{item.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Como funciona o PIN */}
+            <div className="rounded-lg border border-gray-200 p-4">
+              <h4 className="font-semibold text-[#14344A] text-sm mb-2">ℹ️ Como funciona</h4>
+              <ul className="space-y-1.5 text-sm text-gray-600">
+                <li className="flex gap-2"><span className="text-red-400 font-bold flex-shrink-0">•</span> Ao acessar uma página protegida, um modal solicita o PIN antes de exibir o conteúdo.</li>
+                <li className="flex gap-2"><span className="text-red-400 font-bold flex-shrink-0">•</span> Após validação correta, o acesso é liberado para <strong>toda a sessão do navegador</strong> — não é preciso digitar novamente enquanto a aba estiver aberta.</li>
+                <li className="flex gap-2"><span className="text-red-400 font-bold flex-shrink-0">•</span> Fechar o navegador ou a aba encerra a sessão; o PIN será solicitado novamente no próximo acesso.</li>
+                <li className="flex gap-2"><span className="text-red-400 font-bold flex-shrink-0">•</span> O PIN é configurado pelo administrador do sistema na variável de ambiente <span className="font-mono bg-gray-100 px-1 py-0.5 rounded text-xs">ADMIN_PIN</span> no Vercel.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* 9. Lixeira */}
         <section id="lixeira" className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0" style={{ background: '#7F8C8D' }}>8</div>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0" style={{ background: '#7F8C8D' }}>9</div>
             <h3 className="font-bold text-[#14344A] text-xl">Lixeira</h3>
           </div>
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
