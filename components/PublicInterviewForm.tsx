@@ -50,10 +50,10 @@ const PHASES = [
       {
         id: 'q3',
         label: 'P3: "Você mencionou [gargalo X]. Me ajude a entender: por que isso acontece?"',
-        note: 'Descreva as camadas do problema.',
+        note: 'Descreva as camadas do problema usando a técnica dos 5 Porquês: pergunte "por quê?" sucessivamente até chegar à causa-raiz.',
         placeholder: 'Porquê 1:\nPorquê 2:\nPorquê 3:\nPorquê 4:\nPorquê 5:\nCausa-raiz identificada:',
         tall: true,
-        tip: '',
+        tip: '5porques',
       },
       {
         id: 'q4',
@@ -209,6 +209,29 @@ export default function PublicInterviewForm({ session, area }: { session: Sessio
               <div className="p-5">
                 <div className="text-sm font-semibold text-gray-800 mb-1 leading-relaxed">{q.label}</div>
                 <div className="text-xs text-gray-500 italic mb-3">{q.note}</div>
+                {q.tip === '5porques' && (
+                  <div className="rounded-lg bg-amber-50 border border-amber-200 p-4 mb-4">
+                    <p className="text-xs font-bold text-amber-800 uppercase tracking-wide mb-2">💡 Como aplicar os 5 Porquês</p>
+                    <p className="text-xs text-amber-700 mb-3">Parta do problema observado e pergunte &quot;por quê?&quot; até cinco vezes, cada resposta alimentando a próxima pergunta. O objetivo é sair do sintoma e chegar à causa-raiz real.</p>
+                    <div className="space-y-1.5 text-xs">
+                      <div className="font-semibold text-amber-800 mb-1">Exemplo:</div>
+                      {[
+                        ['Problema', 'Os relatórios de ESG atrasam toda vez.'],
+                        ['Por quê 1?', 'Porque a coleta de dados é feita manualmente pelas áreas.'],
+                        ['Por quê 2?', 'Porque não há um sistema integrado entre as diretorias.'],
+                        ['Por quê 3?', 'Porque cada área usa planilhas com formatos diferentes.'],
+                        ['Por quê 4?', 'Porque nunca foi definido um padrão único de reporte.'],
+                        ['Por quê 5?', 'Porque não existe uma política de governança de dados.'],
+                        ['Causa-raiz', 'Ausência de governança de dados e padronização de processos de reporte.'],
+                      ].map(([label, text], i) => (
+                        <div key={i} className={`flex gap-2 ${label === 'Causa-raiz' ? 'pt-2 border-t border-amber-200 font-semibold text-amber-900' : 'text-amber-700'}`}>
+                          <span className="flex-shrink-0 font-semibold w-20">{label}</span>
+                          <span>{text}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 <div className="flex items-center justify-between mb-1.5">
                   <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Sua resposta:</p>
                   <MicButton onTranscript={(text) => appendTranscript(q.id, text)} />
