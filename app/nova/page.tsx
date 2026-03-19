@@ -11,12 +11,17 @@ interface Cargo {
   order: number;
 }
 
-function formatDateInput(raw: string): string {
-  // Strip non-digits
-  const digits = raw.replace(/\D/g, '').slice(0, 8);
-  if (digits.length <= 2) return digits;
-  if (digits.length <= 4) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
-  return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
+function isoToDisplay(iso: string): string {
+  if (!iso) return '';
+  const [y, m, d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+function displayToISO(display: string): string {
+  if (!display) return '';
+  const [d, m, y] = display.split('/');
+  if (!d || !m || !y) return '';
+  return `${y}-${m}-${d}`;
 }
 
 export default function NovaEntrevistaPage() {
@@ -117,11 +122,9 @@ export default function NovaEntrevistaPage() {
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Data da Entrevista</label>
               <input
-                type="text"
-                value={date}
-                onChange={(e) => setDate(formatDateInput(e.target.value))}
-                placeholder="dd/mm/aaaa"
-                maxLength={10}
+                type="date"
+                value={displayToISO(date)}
+                onChange={(e) => setDate(isoToDisplay(e.target.value))}
                 className="w-full border-2 border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
               />
             </div>
